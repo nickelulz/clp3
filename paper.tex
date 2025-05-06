@@ -1,0 +1,191 @@
+\documentclass{report}
+\usepackage{physics, amsmath, amssymb}
+\usepackage{parskip, hyperref, siunitx, multicol}
+
+\usepackage{graphicx, float}
+\graphicspath{{./figures/}}
+\usepackage{tgpagella}
+
+\usepackage{xcolor} % for color
+\usepackage{tcolorbox} % for creating custom boxes
+\definecolor{crimson}{RGB}{153, 0, 0}
+
+\usepackage[colorinlistoftodos, textsize=small]{todonotes}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=crimson,
+    filecolor=crimson,      
+    urlcolor=crimson,
+    pdftitle={CLP 3 Problems},
+    }
+
+\setcounter{tocdepth}{1}
+
+% Define a custom command for flagging problems
+\NewDocumentCommand{\flagproblem}{m o}{%
+  \begin{tcolorbox}[colframe=crimson!70!black, colback=yellow!20!white, title=\textbf{Flagged Problem}]
+    \textbf{Revisit Me:} #1
+    \IfValueT{#2}{%
+      \vspace{1em}
+      
+      \textbf{Answer:} #2
+    }
+  \end{tcolorbox}
+}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+\ExplSyntaxOn
+\msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+\ExplSyntaxOff
+
+% Problem and subproblem counters
+\newcounter{problemctr}
+\newcounter{subproblemctr}[problemctr]
+
+% Problem command
+\newcommand{\problem}[1]{%
+  \stepcounter{problemctr}%
+  \setcounter{subproblemctr}{0}%
+  \noindent\arabic{problemctr}. #1\par
+}
+
+% Subproblem command
+\newcommand{\subproblem}[1]{%
+  \stepcounter{subproblemctr}%
+  \noindent\hspace{1em}(\alph{subproblemctr}) #1\par
+}
+
+\newenvironment{answer}
+  {\begin{minipage}{\linewidth}}
+  {\end{minipage}}
+
+\title{CLP 3 Multivariable Calculus Problem Solutions}
+\author{Mufaro Machaya}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Vectors and Geometry in Three Dimensions}
+\section{Points}
+\subsection{Stage 1}
+\problem{Describe the set of all points $(x,y,z)$ in $\mathbb{R}^3$ that satisfy}
+
+\subproblem{$x^2 + y^2 + z^2 = 2x - 4y + 4$}
+\begin{answer}
+Can be rearranged algebraically into $(x-1)^2 + (y + 2)^2 + (z - 0)^2 = 1$, making a sphere located at $(1,-2,0)$ with radius $1$.
+\end{answer}
+
+\subproblem{$x^2 + y^2 + z^2 < 2x - 4y + 4$}
+\begin{answer}
+See above. All valid points are within the sphere.
+\end{answer}
+
+\problem{Describe and sketch the set of all points $(x,y)$ in $\mathbb{R}^2$ that satisfy}
+\subproblem{$x=y$}
+\begin{answer}
+This is just a line of $y=x$.
+\end{answer}
+
+\subproblem{$x+y=1$}
+\begin{answer}
+This is a line $y=-x+1$.
+\end{answer}
+
+\subproblem{$x^2 + y^2 = 4$}
+\begin{answer}
+This is a circle centered at $(0,0)$ with radius $2$.
+\end{answer}
+
+\subproblem{$x^2 + y^2 = 2y$}
+\begin{answer}
+This cen be rearranged algebraically to $(x-0)^2 + (y-1)^2 = 1$, which is a circle with radius $1$ centered at $(0,1)$.
+\end{answer}
+
+\subproblem{$x^2 + y^2 < 2y$}
+\begin{answer}
+See above. The correct points are those within the circle.
+\end{answer}
+
+\problem{Describe the set of all points $(x,y,z)$ in $\mathbb{R}^3$ that satisfy the following conditions. Sketch the part of the set that is in the first octant.}
+\subproblem{$z = x$}
+\begin{answer}
+This forms a ``slanted'' plane perfectly between the $x$ and $z$ planes.
+\end{answer}
+
+\subproblem{$x + y + z = 1$}
+\flagproblem{Could not finish.}
+
+\subproblem{$x^2 + y^2 + z^2 = 4$}
+\begin{answer}
+This forms a sphere centered at the origin with radius 2.
+\end{answer}
+
+\subproblem{$x^2 + y^2 + z^2 = 4, z = 1$}
+\begin{answer}
+The solution set is the intersection between a sphere centered at the origin with radius 2 and the $z=1$ plane, producing the $z=1$ cross-section of the sphere: a circle with radius $\sqrt{3}$ centred at the origin of the $z=1$ plane. \\
+
+The two individual shapes can be calculated independently, but determining the solution results from the intersection of the two individual shapes. The radii of this solution circle can be determined by calculating the radii by solving for the resulting circle from $z=1$:
+\begin{align*}
+x^2 + y^2 + (1)^2 &= 4 \\
+x^2 + y^2 &= 3,
+\end{align*}
+meaning that the radius is $\sqrt{3}$.
+\end{answer}
+
+\subproblem{$x^2 + y^2 = 4$}
+\begin{answer}
+This produces a circle of radius 2 centred at the origin.
+\end{answer}
+
+\subproblem{$z = x^2 + y^2$}
+\flagproblem{Unsure how to do this one.}
+
+\problem{Let $A$ be the point $(2,1,3)$}
+\subproblem{Find the distance from $A$ to the $xy$-plane}
+\begin{answer}
+This is just the $z$ coordinate: 3 units.
+\end{answer}
+
+\subproblem{Find the distance from $A$ to the $xz$-plane}
+\begin{answer}
+This is just the $y$ coordinate: 1 unit.
+\end{answer}
+
+\subproblem{Find the distance from $A$ to the point $(x,0,0)$ on the x-axis}
+\begin{answer}
+We can just use the $\mathbb{R}^3$ distance equation
+\begin{equation*}
+d(A,B) = \sqrt{(A_x - B_x)^2 + (A_y - B_y)^2 + (A_z - B_z)^2}
+\end{equation*}
+for the coordinates $A = (2,1,3)$ and $B=(x,0,0)$, which becomes
+\begin{align*}
+d(x) 
+&= \sqrt{(2 - x)^2 + (1 - 0)^2 + (3 - 0)^2} \\
+&= \sqrt{(2 - x)^2 + 10}.
+\end{align*}
+\end{answer}
+
+\subproblem{Find the point on the x-axis that is closest to A.}
+\begin{answer}
+The closest point on the x-axis should, naturally, have the same x-value as $A$, so it would be $(2,0,0)$.
+\end{answer}
+
+\subproblem{What is the distance from A to the x-axis?}
+\begin{answer}
+This is equivalent to the distance between $A$ and the closest point on the x-axis, which is equivalent to $d(2)$. This negates out the first term, making the final answer $\sqrt{10}$.
+\end{answer}
+
+\subsection{Stage 2}
+\problem{Consider any triangle. Pick a coordinate system so that one vertex is at the origin and a second vertex is on the positive x-axis. Call the coordinates of the second vertex ($a$,0) and those of the third vertex $(b,c)$. Find the circumscribing circle (the circle that goes through all three vertices).}
+\begin{answer}
+
+\end{answer}
+
+\problem{A certain surface consists of all points $P = (x,y,z)$ such that the distance from $P$ to the point $(0,0,1)$ is equal to the distance from $P$ to the plane $z+1=0$. Find an equation for the surface, sketch and describe it verbally.}
+\problem{Show that the set of all points $P$ that are twice as far from $(3,-2,3)$ as from $(\frac{3}{2},1,0)$ is a sphere. Find its centre and radius.}
+
+\subsection{Stage 3}
+\problem{The pressure $p(x,y)$ at the point $(x,y)$ is at least zero and is determined by the equation $x^2 - 2px + y^2 = 3p^2$. Sketch several isobars. An isobar is a curve with equation $p(x,y) = c$ for some constant $c \ge 0$.}
+\end{document}
