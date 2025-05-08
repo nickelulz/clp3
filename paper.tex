@@ -1,14 +1,18 @@
 \documentclass{report}
-\usepackage{physics, amsmath, amssymb}
+\usepackage{physics, amsmath, amssymb, esvect}
 \usepackage{parskip, hyperref, siunitx, multicol}
 
 \usepackage{graphicx, float}
 \graphicspath{{./figures/}}
-\usepackage{tgpagella}
 
 \usepackage{xcolor} % for color
 \usepackage{tcolorbox} % for creating custom boxes
 \definecolor{crimson}{RGB}{153, 0, 0}
+
+\DeclareMathOperator{\project}{proj}
+\newcommand{\proj}[2]{\project_{#1}#2}
+\newcommand{\matr}[1]{\mathbf{#1}}
+
 
 \usepackage[colorinlistoftodos, textsize=small]{todonotes}
 
@@ -52,12 +56,15 @@
 % Subproblem command
 \newcommand{\subproblem}[1]{%
   \stepcounter{subproblemctr}%
-  \noindent\hspace{1em}(\alph{subproblemctr}) #1\par
+  \noindent\hspace{1em}(\alph{subproblemctr}) #1 \par
 }
 
 \newenvironment{answer}
   {\begin{minipage}{\linewidth}}
   {\end{minipage}}
+\newcommand{\breakanswer}{
+\end{answer}
+\begin{answer}}
 
 \title{CLP 3 Multivariable Calculus Problem Solutions}
 \author{Mufaro Machaya}
@@ -115,7 +122,9 @@ This forms a ``slanted'' plane perfectly between the $x$ and $z$ planes.
 \end{answer}
 
 \subproblem{$x + y + z = 1$}
-\flagproblem{Could not finish.}
+\begin{answer}
+First, we can know what kind of a geometric object to expect from the equation form. Squared variables will form objects that have a depth, but unsquared variables will form lines or planes. We can then understand what is occuring here by taking cross-sections. We can take the 1-dimensional cross section for $x=0, y=0, $ and $z = 0$ respectfully, and each will form some inverse linear graph of form $z(x) = 1 - x$, $z(y) = 1 - y$, and $y(x) = 1 - x$ respectfully. Plotting these together, the solution form is a slanted plane formed across all of these with a triangular shape.
+\end{answer}
 
 \subproblem{$x^2 + y^2 + z^2 = 4$}
 \begin{answer}
@@ -140,7 +149,9 @@ This produces a circle of radius 2 centred at the origin.
 \end{answer}
 
 \subproblem{$z = x^2 + y^2$}
-\flagproblem{Unsure how to do this one.}
+\begin{answer}
+A good strategy for tackling this kind of problem is viewing the cross-sections in $\mathbb{R}^2$. Both vertical cross-sections are parabolic and the overhead cross sections are circular with the center on the origin, so this produces a paraboloid.
+\end{answer}
 
 \problem{Let $A$ be the point $(2,1,3)$}
 \subproblem{Find the distance from $A$ to the $xy$-plane}
@@ -180,12 +191,603 @@ This is equivalent to the distance between $A$ and the closest point on the x-ax
 \subsection{Stage 2}
 \problem{Consider any triangle. Pick a coordinate system so that one vertex is at the origin and a second vertex is on the positive x-axis. Call the coordinates of the second vertex ($a$,0) and those of the third vertex $(b,c)$. Find the circumscribing circle (the circle that goes through all three vertices).}
 \begin{answer}
+First, let's describe the variables we're looking for by defining the circle itself. We know that this circle will follow the circle equation, letting $(x_0, y_0)$ be the centerpoint of the circle and $r$ be the radius of the circle
+\begin{equation*}
+(x-x_0)^2 + (y-y_0)^2 = r^2,
+\end{equation*}
+and for any point to lie on the circle, this equation holds true. Therefore, for all three points $(a,0), (b,c),$ and $(0,0)$, this circle equation must be true, so we can plug in these values for $x$ and $y$ to produce the following series of equations:
+\begin{align*}
+x_0^2 + y_0^2 &= r^2 \\
+(b - x_0)^2 + (c - y_0)^2 &= r^2 \\
+(a - x_0)^2 + y_0^2 &= r^2.
+\end{align*}
+This system can be solved in order to produce the values for our unknowns ($x_0$, $y_0$, and $r$) in terms of our known variables ($a, b$, and $c$). We can begin by substituting for $r^2$ to produce the equality
+$$(a-x_0)^2 + y_0^2 = x_0^2 + y_0^2,$$
+and this equality allows for $y_0^2$ to be eliminated and can then be solved algebraically to yield
+$$x_0 = \frac{a}{2}.$$
+From there, we can then solve for $y_0$ by substituting for $r^2$ again using the second equation to produce the equality
+$$(b - a^2/2) + (c - y_0)^2 = (a/2)^2 + y_0^2,$$
+and this can also be solved algebraically to produce
+$$b^2 + c^2 - ab = 2cy_0,$$
+yielding
+$$y_0 = \frac{b^2 + c^2 - ab}{2c}.$$
 
+Lastly, we can determine $r$ by rewriting the first equality as
+$$r = \sqrt{x_0^2 + y_0^2},$$
+yielding
+$$r = \sqrt{\frac{1}{4} a^2 + \left(\frac{b^2 + c^2 - ab}{2c}\right)^2}$$
 \end{answer}
 
 \problem{A certain surface consists of all points $P = (x,y,z)$ such that the distance from $P$ to the point $(0,0,1)$ is equal to the distance from $P$ to the plane $z+1=0$. Find an equation for the surface, sketch and describe it verbally.}
+\begin{answer}
+Let $A = (0,0,1)$. We need to find all $p \in P$ that satisfies
+$$d(p,A) = d(p,Q)$$
+where $Q$ is the point closest to $p$ in $\{ z = -1 \}$, which by definition, should be $Q = (p_x, p_y, -1)$. Using the distance formula squared, this equality becomes
+\begin{align*}
+(p_x - 0)^2 + (p_y - 0)^2 + (p_z - 1)^2 &= (p_x - p_x)^2 + (p_y - p_y)^2 + (p_z + 1)^2 \\
+p_x^2 + p_y^2 &= (p_z + 1)^2 - (p_z - 1)^2 \\
+p_x^2 + p_y^2 &= 4p_z,
+\end{align*} 
+and this surface is an infinite paraboloid centred at $(0,0,1)$ (with a quadratic cross-section of $z = x^2/4$ on $xz$, $z = y^2/4$ on $yz$, and a circular cross-section at all $z \ge 0$).
+\end{answer}
+
 \problem{Show that the set of all points $P$ that are twice as far from $(3,-2,3)$ as from $(\frac{3}{2},1,0)$ is a sphere. Find its centre and radius.}
+\begin{answer}
+Let $A = (3,-2,3)$ and $B = (\frac{3}{2},1,0)$. We need to find all $p \in P$ such that
+$$d(p,A) = 2d(p,B).$$
+Using the distance formula squared, this becomes
+\begin{align*}
+(p_x - 3)^2 + (p_y + 2)^2 + (p_z - 3)^2 = 4(p_x - 3/2)^2 + 4(p_y - 1)^2 + 4p_z^2,
+\end{align*}
+which simplifies down to
+$$0 = p_x^2 - 2p_x + p_y^2 - 4p_y + p_z^2 + 2p_z - 3,$$
+and after completing the squares, we find that all $p \in S$ must satisfy the sphere equation
+$$(x - 1)^2 + (y - 2)^2 + (z + 1)^2 = 3^2,$$
+forming a sphere with radius $3$ centred at $(1, 2, -1)$.
+\end{answer}
 
 \subsection{Stage 3}
 \problem{The pressure $p(x,y)$ at the point $(x,y)$ is at least zero and is determined by the equation $x^2 - 2px + y^2 = 3p^2$. Sketch several isobars. An isobar is a curve with equation $p(x,y) = c$ for some constant $c \ge 0$.}
+\begin{answer}
+We can complete the square to produce
+$$(x-p)^2 - p^2 + y^2 = 3p^2,$$
+which forms the overall equation
+$$(x-p)^2 + y^2 = (2p)^2.$$
+
+This means that all isobars $p(x,y) = c$ produce circles centred at $(c,0)$ with radius $2c$. For example, let the set of isobars at $c=3$ be $S(3)$. All isobars $I \in S(3)$ satisfy the circle equation
+$$(x - 3)^2 + y^2 = 6^2.$$
+\end{answer}
+
+\section{Vectors}
+\subsection{Stage 1}
+\problem{Let $\va{a} = \langle 2,0 \rangle$ and $\va{b} = \langle 1,1 \rangle$. Evaluate and sketch $\va{a} + \va{b}, \va{a} + 2\va{b},$ and $2\va{a} - \va{b}$.}
+\begin{answer}
+Diagrams not included.
+\begin{enumerate}
+\item $\va{a} + \va{b} = \langle 2 + 1, 0 + 1 \rangle = \langle 3, 1 \rangle$
+\item $\va{a} + 2\va{b} = \langle 2 + 2(1), 0 + 2(1) \rangle = \langle 4, 2 \rangle$
+\item $2\va{a} - \va{b} = \langle 2(2) - 1, 2(0) - 1 \rangle = \langle 3, -1 \rangle$
+\end{enumerate}
+\end{answer}
+
+\problem{Determine whether or not the given points are collinear (that is, lie on a common straight line):}
+\begin{answer}
+For this kind of problem, we know that if the three points are collinear, they must all satisfy the same $\mathbb{R}^3$ parallel-vector line equation, which can be defined as
+$$\langle x_1 - x_0, y_1 - y_0, z_1 - z_0 \rangle = t\langle x_2 - x_0, y_2 - y_0, z_2 - z_0 \rangle,$$
+which essentially states that given a common point $A$ that we assume lies on the line, the vector from $A$ to $B$ and $A$ to $C$ are merely scalar multiples of each other, which implies collinearity of $A, B,$ and $C$.
+\end{answer}
+
+\subproblem{$(1,2,3), (0,3,7), (3,5,11)$}
+\begin{answer}
+Let's test out this process:
+\begin{align*}
+\langle 0 - 1, 3 - 2, 7 - 3 \rangle &= t \langle 3 - 1, 5 - 2, 11 - 3 \rangle \\
+\langle -1, 1, 4 \rangle &= t \langle 2, 3, 8 \rangle
+\end{align*}
+we can determine from this that these three points are not collinear as there is not a common scalar $t$ such that $2t=-1, 3t=1,$ and $8t=4$.
+\end{answer}
+
+\subproblem{$(0,3,-5), (1,2,-2), (3,0,4)$}
+\begin{answer}
+Let's follow this process again:
+\begin{align*}
+\langle 1 - 0, 2 - 3, -2 + 5 \rangle &= t \langle 3 - 0, 0 - 3, 4 + 5 \rangle \\
+\langle 1, -1, 3 \rangle &= t \langle 3, -3, 9 \rangle,
+\end{align*}
+and we can determine that these points must be collinear as there is a common scalar $t=\frac{1}{3}$ such that $3t=1, -3t=-1,$ and $9t=3$.
+\end{answer}
+
+\problem{Determine whether the given pair of vectors is perpendicular}
+\begin{answer}
+For this kind of problem, we can determine perpendicularity based on the dot product between two vectors, as $\va{A} \perp \va{B}$ if $\va{A} \vdot \va{B} = 0$.
+\end{answer}
+
+\subproblem{$\langle 1,3,2 \rangle, \langle 2, -2, 2 \rangle$}
+\begin{answer}
+As 
+\begin{align*}
+\langle 1, 3, 2 \rangle \vdot \langle 2, -2, 2 \rangle 
+&= (1 \times 2) + (3 \times -2) + (2 \times 2) \\ 
+&= 2 - 6 + 4 = 0,
+\end{align*}
+the two vectors must be perpendicular.
+\end{answer}
+
+\subproblem{$\langle -3,1,7 \rangle, \langle 2, -1, 1 \rangle$}
+\begin{answer}
+As
+\begin{align*}
+\langle -3,1,7 \rangle, \langle 2, -1, 1 \rangle
+&= (-3 \times 2) + (1 \times -1) + (7 \times 1) \\
+&= -6 -1 +7 = 0,
+\end{align*}
+the two vectors must be perpendicular.
+\end{answer}
+
+\subproblem{$\langle 2,1,1 \rangle, \langle -1,4,2 \rangle$}
+\begin{answer}
+As
+\begin{align*}
+\langle 2,1,1 \rangle, \langle -1,4,2 \rangle
+&= (2 \times -1) + (1 \times 4) + (1 \times 2) \\
+&= -2 + 4 + 2 = 4 \ne 0,
+\end{align*}
+the two vectors are not perpendicular.
+\end{answer}
+
+\problem{Consider the vector $\va{a} = \langle 3, 4 \rangle$}
+\subproblem{Find a unit vector in the same direction as $\va{a}$.}
+\begin{answer}
+\begin{equation*}
+\vu{a} = \frac{\va{a}}{|\va{a}|} = \frac{\langle 3, 4 \rangle}{\sqrt{3^2 + 4^2}} = \frac{\langle 3,4 \rangle}{\sqrt{25}} = \left\langle \frac{3}{5}, \frac{4}{5} \right\rangle
+\end{equation*}
+\end{answer}
+
+\subproblem{Find all unit vectors that are parallel to $\va{a}$.}
+There are only two unit vectors parallel to $\va{a}$, $\vu{a}$ and $-\vu{a}$, so the other unit vector is
+\begin{answer}
+\begin{equation*}
+-\vu{a} = \left\langle -\frac{3}{5}, -\frac{4}{5} \right\rangle.
+\end{equation*}
+\end{answer}
+
+\subproblem{Find all vectors that are parallel to $\va{a}$ and have length 10.}
+\begin{answer}
+The length of the original vector $\va{a}$ is already $5$, so all vectors that are parallel with length ten will be $2\va{a}$ and $-2\va{a}$, which is
+\begin{align*}
+2\va{a} &= \langle 6, 8 \rangle \\
+-2\va{a} &= \langle -6, -8 \rangle
+\end{align*}
+\end{answer}
+
+\subproblem{Find all unit vectors that are perpendicular to $\va{a}$.}
+\begin{answer}
+All perpendicular unit vectors can be found by calculating the perpendicular vectors based on the dot product perpendicularity condition (vector $\va{v}$ is perpendicular to $\va{a}$ if $\va{v} \vdot \va{a} = 0$):
+\begin{align*}
+\va{v} \vdot \va{a} 
+&= a_x v_x + a_y v_y = 0 \\
+&= 3x + 4y = 0
+\end{align*}
+
+Now, we know intuitively that given $\va{a}$ in $\mathbb{R}^2$, there can only be two perpendicular vectors, which will be something in the form of $\langle -v_x, v_y \rangle$ and $\langle v_x, -v_y \rangle$. We can define $v_y = 1$ to determine $|v_x| = \frac{4}{3}$\footnote{Note that we could also have defined $v_x = 1$ instead to obtain $|v_y| = \frac{3}{4},$ and this would result in the same unit vectors.}.
+
+From this approach, we obtain the following perpendicular vector $\va{v}_\perp = \langle 4/3, -1 \rangle$ and $-\va{v}_\perp$. The perpendicular unit vectors we are looking for, in turn, are $\pm \vu{v}_\perp$.
+\begin{equation*}
+\vu{v}_\perp = \frac{\va{v}_\perp}{|\va{v}_\perp|} = \frac{\langle 4/3, -1 \rangle}{\sqrt{(4/3)^2 + (-1)^2}} = \frac{\langle 4/3, -1 \rangle}{\sqrt{25/9}} = \left\langle \frac{4}{3} \times \frac{3}{5}, -1 \times \frac{3}{5} \right\rangle = \left\langle \frac{4}{5}, -\frac{3}{5} \right\rangle,
+\end{equation*}
+so the unit vectors we are looking for are
+\begin{equation*}
+\left\langle \frac{4}{5}, -\frac{3}{5} \right\rangle,
+\left\langle -\frac{4}{5}, \frac{3}{5} \right\rangle.
+\end{equation*}
+\end{answer}
+
+\problem{Consider the vector $\va{b} = \langle 3, 4, 0 \rangle$}
+\subproblem{Find a unit vector in the same direction as $\va{b}$.}
+\begin{answer}
+\begin{equation*}
+\vu{b} = \frac{\va{b}}{|\va{b}|} = \frac{\langle 3, 4, 0 \rangle}{\sqrt{3^2 + 4^2 + 0^2}} = \frac{\langle 3, 4, 0 \rangle}{\sqrt{25}} = \left\langle \frac{3}{5}, \frac{4}{5}, 0 \right\rangle
+\end{equation*}
+\end{answer}
+
+\subproblem{Find all unit vectors that are parallel to $\va{b}$.}
+\begin{answer}
+The parallel unit vectors are $\vu{b}$ and $-\vu{b}$:
+\begin{equation*}
+\left\langle \frac{3}{5}, \frac{4}{5}, 0 \right\rangle, \left\langle -\frac{3}{5}, -\frac{4}{5}, 0 \right\rangle
+\end{equation*}
+\end{answer}
+
+\subproblem{Find four different unit vectors that are perpendicular to $\va{b}$.}
+\begin{answer}
+Four perpendicular unit vectors will satisfy
+$$\vu{v}_\perp \vdot \va{b} = 0.$$
+This calculates out to
+\begin{align*}
+v_x b_x + v_y b_y + v_z b_z &= 0 \\
+3x + 4y &= 0, z \in \infty,
+\end{align*}
+therefore all vectors that lie on the plane defined by $3x + 4y = 0$ are perpendicular to $\va{b}$. Four possible options for this are
+\begin{multicols}{2}
+\begin{enumerate}
+\item $\left\langle \frac{4}{5}, -\frac{3}{5}, 0 \right\rangle$
+\item $\left\langle \frac{4}{5}, -\frac{3}{5}, 1 \right\rangle$
+\item $\left\langle \frac{4}{5}, -\frac{3}{5}, 2 \right\rangle$
+\item $\left\langle \frac{4}{5}, -\frac{3}{5}, 3 \right\rangle$
+\end{enumerate}
+\end{multicols}
+\end{answer}
+
+\problem{Let $\va{a} = \langle a_1, a_2 \rangle$. Compute the projection of $\va{a}$ on $\hat{\i}$ and $\hat{\j}$}
+\begin{answer}
+\begin{equation*}
+\proj{\va{a}}{\hat{\i}} = (\va{a} \vdot \hat{\i}) \hat{\i} = (a_1 \times 1 + a_2 \times 0) \hat{\i} = \langle a_1, 0 \rangle
+\end{equation*}
+\end{answer}
+
+\problem{Does the triangle with vertices $(1,2,3), (4,0,5),$ and $(3,6,4)$ have a right angle?}
+\begin{answer}
+Let $A = (1,2,3), B = (4,0,5),$ and $C = (3,6,4)$. Let $\va{\alpha}$ be the vector from $A$ to $B$\footnote{For consistency sake, we define this to have a non-commutative mathematical meaning. The vector from $A$ to $B$ is defined as $A - B$.}, $\va{\beta}$ be the vector from $A$ to $C$, and $\va{\delta}$ be the vector from $B$ to $C$.
+
+Firstly, let's calculate the values of these vectors:
+\begin{itemize}
+\item $\va{\alpha} = A - B = \langle 1-4, 2-0, 3-5 \rangle = \langle -3, 2, -2 \rangle$
+\item $\va{\beta} = A - C = \langle 1-3, 2-6, 3-4 \rangle = \langle -2, -4, -1 \rangle$
+\item $\va{\delta} = B - C = \langle 4-3, 0-6, 5-4 \rangle = \langle 1, -6, 1 \rangle$
+\end{itemize}
+
+Now, for the triangle formed by these points to contain a right angle, two of the above vectors must be perpendicular. Therefore, if the dot product between any of the above two vectors is 0, there is a right angle in the triangle. We can start systematically with $\va{\alpha} \vdot \va{\beta}$:
+\begin{align*}
+\va{\alpha} \vdot \va{\beta} 
+&= \langle -3, 2, -2 \rangle \vdot \langle -2, -4, -1 \rangle \\
+&= (-3 \times -2) + (2 \times -4) + (-2 \times -1) \\
+&= 6 - 8 + 2 = 0. 
+\end{align*}
+Therefore, without even needing to try the other combinations, we know that as $\va{\alpha} \vdot \va{\beta} = 0, \va{a} \perp \va{\beta}$, indicating that there is a right angle within this triangle.
+\end{answer}
+
+\problem{Show that the area of the parallelogram determined by the vectors $\va{a}$ and $\va{b}$ is $|\va{a} \cross \va{b}|$.}
+\begin{answer}
+Realign the parallelogram such that $\va{a}$ is aligned to the x-axis ($\va{a} = \langle a_x, 0 \rangle$, where $a_x = |\va{a}|$). The area of the parallelogram is therefore equal to $a_x b_y$. For a two-dimensional cross-product, the resultant vector is defined as
+\begin{equation*}
+|\va{a} \cross \va{b}| = \det 
+\begin{bmatrix}
+a_x & a_y \\
+b_x & b_y
+\end{bmatrix} = a_x b_y - a_y b_x = a_x b_y.
+\end{equation*}
+Therefore, the area of the parallelogram is the magnitude of the cross product of the two vectors.
+\end{answer}
+
+\problem{Show that the volume of the parallelepiped determined by vectors $\va{a}, \va{b},$ and $\va{c}$ is $|\va{a} \vdot (\va{b} \cross \va{c})|$.}
+\begin{answer}
+We've already established that $\va{b} \cross \va{c}$ will produce an area vector for the base, $\va{B}$, and that the full volume of the parallelopiped will be $Bh$, where $h$ is the height of the parallelopiped. If we assume $c$ to be aligned perfectly to the $y$-axis, that being that the vectors are redefined as
+\begin{align*}
+\va{a} &= \langle a_x, a_y, a_z \rangle \\
+\va{b} &= \langle b_x, b_y, 0 \rangle \\
+\va{c} &= \langle 0, c_y, 0 \rangle,
+\end{align*}
+we find that the three-dimensional cross product of $\va{b}$ and $\va{c}$ produces
+\begin{align*}
+\va{b} \cross \va{c} &= \det 
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+b_x & b_y & b_z \\
+c_x & c_y & c_z
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} b_y & b_z \\ c_y & c_z \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} b_x & b_z \\ c_x & c_z \end{bmatrix}
+ + \hat{k} \det \begin{bmatrix} b_x & b_y \\ c_x & c_y \end{bmatrix} \\
+&= \hat{\i} (b_y c_z - b_z c_y) - \hat{\j} (b_x c_z - b_z c_x) + \hat{k} (b_x c_y - b_y c_x) \\
+&= \langle b_y c_z - b_z c_y, b_z c_x - b_x c_z, b_x c_y - b_y c_x \rangle.
+\end{align*}
+Now, plugging in for the actual values of $\va{b}$ and $\va{c}$, we get
+$$\va{b} \cross \va{c} = \langle 0, 0, b_x c_y \rangle.$$
+
+Remember that, intuitively, we know that the area of the parallelopiped should be $a_z b_x c_y$ assuming $\va{c}$ is aligned with the $y$-axis. Now, we just need to find the dot product of $\va{a}$ and $(\va{b} \cross \va{c})$:
+\begin{align*}
+\va{a} \vdot (\va{b} \cross \va{c}) = a_x (0) + a_y (0) + a_z (b_x c_y) = a_z b_x c_y.
+\end{align*}
+Therefore, the area of the parallelopiped is equal to $\va{a} \vdot (\va{b} \cross \va{c}).$
+\end{answer}
+
+\problem{Verify by direct computation that}
+\subproblem{$\hat{\i} \cross \hat{\j} = \hat{k}, \hat{\j} \cross \hat{k} = \hat{\i}, \hat{k} \cross \hat{\i} = \hat{\j}$}
+\begin{answer}
+\begin{itemize}
+\item $\hat{\i} \cross \hat{\j} = \hat{k}$:
+\begin{align*}
+\hat{\i} \cross \hat{\j} &= \det
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} 0 & 0 \\ 1 & 0 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}
+ + \hat{ k} \det \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
+&= \hat{\i} (0) - \hat{\j} (0) + \hat{k} (1) \\
+&= \hat{k}
+\end{align*}
+
+\item $\hat{\j} \cross \hat{k} = \hat{\i}$:
+\begin{align*}
+\hat{\j} \cross \hat{k} &= \det
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} 0 & 0 \\ 0 & 1 \end{bmatrix}
+ + \hat{ k} \det \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} \\
+&= \hat{\i} (1) - \hat{\j} (0) + \hat{k} (0) \\
+&= \hat{\i}
+\end{align*}
+
+\item $\hat{k} \cross \hat{\i} = \hat{\j}$:
+\begin{align*}
+\hat{k} \cross \hat{\i} &= \det
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+0 & 0 & 1 \\
+1 & 0 & 0
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+ + \hat{ k} \det \begin{bmatrix} 0 & 0 \\ 1 & 0 \end{bmatrix} \\
+&= \hat{\i} (0) - \hat{\j} (-1) + \hat{k} (0) \\
+&= \hat{\j}
+\end{align*}
+\end{itemize}
+\end{answer}
+
+\subproblem{$\va{a} \vdot (\va{a} \cross \va{b}) = \va{b} \vdot (\va{a} \cross \va{b}) = 0$}
+\begin{answer}
+Firstly, let's solve for $\va{a} \cross \va{b}$ assuming $\va{a}, \va{b} \in \mathbb{R}^3$:
+\begin{align*}
+\va{a} \cross \va{b} &= \det
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+a_1 & a_2 & a_3 \\
+b_1 & b_2 & b_3 
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} a_2 & a_3 \\ b_2 & b_3 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} a_1 & a_3 \\ b_1 & b_3 \end{bmatrix}
+ + \hat{ k} \det \begin{bmatrix} a_1 & a_2 \\ b_1 & b_2 \end{bmatrix} \\
+&= \hat{\i} (a_2 b_3 - a_3 b_2) - \hat{\j} (a_1 b_3 - a_3 b_1) + \hat{k} (a_1 b_2 - a_2 b_1) \\
+&= \langle a_2 b_3 - a_3 b_2, a_3 b_1 - a_1 b_3, a_1 b_2 - a_2 b_1 \rangle.
+\end{align*}
+Now, we can solve for both dot products:
+\begin{align*}
+\va{a} \vdot (\va{a} \cross \va{b}) 
+&= a_1 (a_2 b_3 - a_3 b_2) + a_2 (a_3 b_1 - a_1 b_3) + a_3 (a_1 b_2 - a_2 b_1) \\
+&= a_1 a_2 b_3 - a_1 a_3 b_2 + a_2 a_3 b_1 - a_1 a_2 b_3 + a_1 a_3 b_2 - a_2 a_3 b_1 \\
+&= (a_1 a_2 b_3 - a_1 a_2 b_3) + (a_1 a_3 b_2 - a_1 a_3 b_2) + (a_2 a_3 b_1 - a_2 a_3 b_1) \\
+&= 0
+\end{align*}
+and
+\begin{align*}
+\va{b} \vdot (\va{a} \cross \va{b})
+&= b_1 (a_2 b_3 - a_3 b_2) + b_2 (a_3 b_1 - a_1 b_3) + b_3 (a_1 b_2 - a_2 b_1) \\
+&= a_2 b_1 b_3 - a_3 b_1 b_2 + a_3 b_1 b_2 - a_1 b_2 b_3 + a_1 b_2 b_3 - a_2 b_1 b_3 \\
+&= (a_2 b_1 b_3 - a_2 b_1 b_3) + (a_3 b_1 b_2 - a_3 b_1 b_2) + (a_1 b_2 b_3 - a_1 b_2 b_3) \\
+&= 0.
+\end{align*}
+\end{answer}
+
+\problem{Consider the following statement: ``If $\va{a} \ne 0$ and if $\va{a} \vdot \va{b} = \va{a} \vdot \va{c}$ then $\va{b} = \va{c}$.'' If the statement is true, prove it. If the statement is false, give a counterexample.}
+\begin{answer}
+Assume $\va{a}, \va{b}, \va{c} \in \mathbb{R}^3$:
+\begin{align*}
+\va{a} \vdot \va{b} &= \va{a} \vdot \va{c} \\
+a_1 b_1 + a_2 b_2 + a_3 b_3 &= a_1 c_1 + a_2 c_2 + a_3 c_3, 
+\end{align*}
+now if we assume $\va{a} = \langle 1, 1, 1 \rangle$, this becomes
+\begin{align*}
+b_1 + b_2 + b_3 &= c_1 + c_2 + c_3,
+\end{align*}
+so the all that is required for this to be true is that the sums of each of the components for each vector is the same, but the individual vectors do not need to be equal. Altogether, that means that a disproving counterexample to the point would be
+\begin{align*}
+\va{a} &= \langle 1, 1, 1 \rangle, \\
+\va{b} &= \langle 1, 0, 0 \rangle, \\
+\va{c} &= \langle 0, 1, 0 \rangle.
+\end{align*}
+\end{answer}
+
+\problem{Consider the following statement: ``The vector $\va{a} \cross (\va{b} \cross \va{c})$ is of the form $\alpha \va{b} + \beta \va{c}$ for some real numbers $\alpha$ and $\beta$.'' If the statement is true, prove it. If the statement is false, give a counterexample.}
+\begin{answer}
+Lets just directly compute the first cross product
+\begin{align*}
+\va{b} \cross \va{c} &= \det 
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+b_1 & b_2 & b_3 \\
+c_1 & c_2 & c_3
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} b_2 & b_3 \\ c_2 & c_3 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} b_1 & b_3 \\ c_1 & c_3 \end{bmatrix}
+ + \hat{ k} \det \begin{bmatrix} b_1 & b_2 \\ c_1 & c_2 \end{bmatrix} \\
+&= \hat{\i} (b_2 c_3 - b_3 c_2) - \hat{\j} (b_1 c_3 - b_3 c_1) + \hat{k} (b_1 c_2 - b_2 c_1) \\
+&= \langle b_2 c_3 - b_3 c_2, b_3 c_1 - b_1 c_3, b_1 c_2 - b_2 c_1 \rangle,
+\end{align*}
+and now the second, outer cross product
+\begin{align*}
+\va{a} \cross (\va{b} \cross \va{c}) &= \det
+\begin{bmatrix}
+\hat{\i} & \hat{\j} & \hat{k} \\
+a_1 & a_2 & a_3 \\
+b_2 c_3 - b_3 c_2 & b_3 c_1 - b_1 c_3 & b_1 c_2 - b_2 c_1
+\end{bmatrix} \\
+&= \hat{\i} \det \begin{bmatrix} a_2 & a_3 \\ b_3 c_1 - b_1 c_3 & b_1 c_2 - b_2 c_1 \end{bmatrix}
+ - \hat{\j} \det \begin{bmatrix} a_1 & a_3 \\ b_2 c_3 - b_3 c_2 & b_1 c_2 - b_2 c_1 \end{bmatrix} \\
+&+ \hat{ k} \det \begin{bmatrix} a_1 & a_2 \\ b_2 c_3 - b_3 c_2 & b_3 c_1 - b_1 c_3 \end{bmatrix} \\
+%
+&= \hat{\i} \left[ a_2 (b_1 c_2 - b_2 c_1) - a_3 (b_3 c_1 - b_1 c_3) \right]
+ - \hat{\j} \left[ a_1 (b_1 c_2 - b_2 c_1) - a_3 (b_2 c_3 - b_3 c_2) \right] \\ 
+&+ \hat{ k} \left[ a_1 (b_3 c_1 - b_1 c_3) - a_2 (b_2 c_3 - b_3 c_2) \right] \\
+%
+&= \hat{\i} \left[ a_2 (b_1 c_2 - b_2 c_1) - a_3 (b_3 c_1 - b_1 c_3) \right]
+ + \hat{\j} \left[ a_3 (b_2 c_3 - b_3 c_2) - a_1 (b_1 c_2 - b_2 c_1) \right] \\ 
+&+ \hat{ k} \left[ a_1 (b_3 c_1 - b_1 c_3) - a_2 (b_2 c_3 - b_3 c_2) \right] \\
+%
+&= \hat{\i} \left[ a_2 b_1 c_2 - a_2 b_2 c_1 - a_3 b_3 c_1 + a_3 b_1 c_3 \right]
+ + \hat{\j} \left[ a_3 b_2 c_3 - a_3 b_3 c_2 - a_1 b_1 c_2 + a_1 b_2 c_1 \right] \\ 
+&+ \hat{ k} \left[ a_1 b_3 c_1 - a_1 b_1 c_3 - a_2 b_2 c_3 + a_2 b_3 c_2 \right],
+\end{align*}
+so altogether, the overall vector can be written (in column form) as
+\begin{equation*}
+\va{a} \cross (\va{b} \cross \va{c}) =
+\left\langle
+\begin{matrix}
+a_2 b_1 c_2 - a_2 b_2 c_1 - a_3 b_3 c_1 + a_3 b_1 c_3 \\
+a_3 b_2 c_3 - a_3 b_3 c_2 - a_1 b_1 c_2 + a_1 b_2 c_1 \\
+a_1 b_3 c_1 - a_1 b_1 c_3 - a_2 b_2 c_3 + a_2 b_3 c_2
+\end{matrix}
+\right\rangle
+\end{equation*}
+\end{answer}
+\begin{answer}
+and this can be simplified by arranging and factoring out the variables for $\va{b}$ and $\va{c}$ at each dimension:
+\begin{align*}
+\va{a} \cross (\va{b} \cross \va{c})
+% 
+&=
+\left\langle
+\begin{matrix}
+a_2 b_1 c_2 + a_3 b_1 c_3 - (a_2 b_2 c_1 + a_3 b_3 c_1)  \\
+a_3 b_2 c_3 + a_1 b_2 c_1 - (a_3 b_3 c_2 + a_1 b_1 c_2) \\
+a_1 b_3 c_1 + a_2 b_3 c_2 - (a_1 b_1 c_3 + a_2 b_2 c_3)
+\end{matrix}
+\right\rangle \\
+%
+&=
+\left\langle
+\begin{matrix}
+a_2 b_1 c_2 + a_3 b_1 c_3 \\
+a_3 b_2 c_3 + a_1 b_2 c_1 \\
+a_1 b_3 c_1 + a_2 b_3 c_2
+\end{matrix}
+\right\rangle
+-
+\left\langle
+\begin{matrix}
+a_2 b_2 c_1 + a_3 b_3 c_1 \\
+a_3 b_3 c_2 + a_1 b_1 c_2 \\
+a_1 b_1 c_3 + a_2 b_2 c_3
+\end{matrix}
+\right\rangle \\
+%
+&=
+\left\langle
+\begin{matrix}
+b_1(a_2 c_2 + a_3 c_3) \\
+b_2(a_3 c_3 + a_1 c_1) \\
+b_3(a_1 c_1 + a_2 c_2)
+\end{matrix}
+\right\rangle
+-
+\left\langle
+\begin{matrix}
+c_1(a_2 b_2 + a_3 b_3) \\
+c_2(a_3 b_3 + a_1 b_1) \\
+c_3(a_1 b_1 + a_2 b_2),
+\end{matrix}
+\right\rangle
+\end{align*}
+and this disproves the original assertion as the scalar multiples for each dimension on $\va{b}$ and $\va{c}$ are completely different in all cases other than those where $\va{a} = \va{b} = \va{c}$ and all three are completely uniform (i.e. $a_1 = a_2 = a_3$).
+\end{answer}
+
+\problem{What geometric conclusions can you draw from $\va{a} \vdot (\va{b} \cross \va{c}) = \langle 1, 2, 3 \rangle$?}
+\flagproblem{I don't think you can make any, actually. $\va{a} \vdot (\va{b} \cross \va{c})$ should produce a scalar, \textit{not} a vector, so this problem should be wrong.}
+
+\problem{What geometric conclusions can you draw from $\va{a} \vdot (\va{b} \cross \va{c}) = 0$?}
+\begin{answer}
+We can conclude that $\va{a} \perp \va{b} \cross \va{c}$.
+\end{answer}
+
+\problem{Consider three points $O=(0,0), A=(a,0),$ and $B=(b,c)$.}
+\subproblem{Sketch, in a single figure,
+\begin{itemize}
+\item the triangle with vertices $O, A,$ and $B,$ and
+\item the circumscribing circle for the triangle (i.e. the circle that goes through all three vertices), and
+\item the vectors
+  \begin{itemize}
+  \item $\vv{OA}$, from $O$ to $A$,
+  \item $\vv{OB}$, from $O$ to $B$,
+  \item $\vv{OC}$, from $O$ to $C$, where $C$ is the centre of the circumscribing circle. 
+  \end{itemize}
+\end{itemize}
+Then, add to the sketch and evaluate, from the sketch,
+\begin{itemize}
+\item the projection of the vector $\vv{OC}$ on the vector $\vv{OA}$, and
+\item the projection of the vector $\vv{OC}$ on the vector $\vv{OB}$.
+\end{itemize}
+}
+\begin{answer}
+Sketch not included.
+\end{answer}
+
+\subproblem{Determine $C$.}
+\begin{answer}
+The circumscribing circle, as previously solved for in question 5 of stage 2 of 1.1, will be centered at
+\begin{equation*}
+C = \left( \frac{a}{2}, \frac{b^2 + c^2 - ab}{2c} \right)
+\end{equation*}
+with radius
+\begin{equation*}
+r = \sqrt{ \frac{a^2}{4} + \left( \frac{b^2 + c^2 - ab}{2c} \right)^2 }.
+\end{equation*}
+\end{answer}
+
+\subproblem{Evaluate, using the formula $(1.2.14)$ in the CLP-3 text,
+\begin{itemize}
+\item the projection of the vector $\vv{OC}$ on the vector $\vv{OA}$, and
+\item the projection of the vector $\vv{OC}$ on the vector $\vv{OB}$.
+\end{itemize}
+}
+\begin{answer}
+First, let's define vectors $\vv{OA}, \vv{OB},$ and $\vv{OC}$. Using our previous definition for point-based vectors, $\vv{OA} = \langle a, 0 \rangle, \vv{OB} = \langle b, c \rangle,$ and
+\begin{equation*}
+\vv{OC} = \left\langle \frac{a}{2}, \frac{b^2 + c^2 - ab}{2c} \right\rangle.
+\end{equation*}
+Now, using formula $(1.2.14)$,
+\begin{equation*}
+\proj{\va{a}}{\va{b}} = \left( \frac{\va{a} \vdot \va{b}}{|\va{b}|} \right) \vu{b},
+\end{equation*}
+we can calculate the first projection,
+\begin{equation*}
+\proj{\vv{OC}}{\vv{OA}} = \left( \frac{\vv{OC} \vdot \vv{OA}}{|\vv{OA}|} \right) \vu{OA}
+\end{equation*}
+step-by-step, beginning with the dot product
+\begin{align*}
+\vv{OC} \vdot \vv{OA} = (\frac{a}{2} \times a) + \left( \frac{b^2 + c^2 - ab}{2c} \times 0 \right) = \frac{a^2}{2},
+\end{align*}
+then the magnitude of $\vv{OA}$ is obviously, by visual inspection, just $a$, and lastly, the unit vector for $\vv{OA}$ is
+\begin{align*}
+\vu{OA} = \frac{\va{OA}}{|\vv{OA}|} = \frac{\langle a, 0\rangle}{a} = \langle 1, 0 \rangle = \hat{\i}.
+\end{align*}
+Altogether, this becomes
+\begin{align*}
+\proj{\vv{OC}}{\vv{OA}} = \left( \frac{a^2 / 2}{a} \right) \hat{\i} = \left( \frac{1}{2} a \right) \hat{\i} = \langle \frac{1}{2} a, 0 \rangle = \frac{1}{2} \vv{OA}.
+\end{align*}
+\breakanswer
+Similarly, we can follow the same process for the next projection,
+\begin{equation*}
+\proj{\vv{OC}}{\vv{OB}} = \left( \frac{\vv{OC} \vdot \vv{OB}}{|\vv{OB}|} \right) \vu{OB},
+\end{equation*}
+beginning with the dot product:
+\begin{equation*}
+\vv{OC} \vdot \vv{OB} = \frac{ab}{2} + \frac{b^2 + c^2 - ab}{2} = \frac{1}{2} (b^2 + c^2),
+\end{equation*}
+then the magnitude:
+$$|\vv{OB}| = \sqrt{b^2 + c^2},$$
+and lastly, the unit vector:
+$$\vu{OB} = \frac{\vv{OB}}{|\vv{OB}|} = \frac{\langle b, c\rangle}{\sqrt{b^2 + c^2}}.$$
+Altogether, this becomes
+\begin{equation*}
+\proj{\vv{OC}}{\vv{OB}} = \left( \frac{1}{2} \frac{b^2 + c^2}{b^2 + c^2} \right) \langle b, c\rangle = \frac{1}{2} \langle b, c \rangle = \frac{1}{2} \vv{OB}.
+\end{equation*}
+\end{answer}
+
 \end{document}
