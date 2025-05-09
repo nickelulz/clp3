@@ -24,7 +24,7 @@
     pdftitle={CLP 3 Problems},
     }
 
-\setcounter{tocdepth}{1}
+% \setcounter{tocdepth}{1}
 
 % Define a custom command for flagging problems
 \NewDocumentCommand{\flagproblem}{m o}{%
@@ -789,5 +789,66 @@ Altogether, this becomes
 \proj{\vv{OC}}{\vv{OB}} = \left( \frac{1}{2} \frac{b^2 + c^2}{b^2 + c^2} \right) \langle b, c\rangle = \frac{1}{2} \langle b, c \rangle = \frac{1}{2} \vv{OB}.
 \end{equation*}
 \end{answer}
+
+\subsection{Stage 2}
+\problem{Find the equation of a sphere if one of its diameters has end points $(2,1,4)$ and $(4,3,10)$.}
+
+\problem{Use vectors to prove that the line joining the midpoints of two sides of a triangle is parallel to the third size and half its length.}
+
+\problem{Compute the areas of the parallelograms determined by the following vectors.}
+\subproblem{$\langle -3, 1 \rangle, \langle 4, 3 \rangle$}
+\subproblem{$\langle 4, 2 \rangle, \langle 6, 8 \rangle$}
+
+\problem{Consider the plane $W$ defined by $$W: -x + 3y + 3z = 6,$$ find the area of the parallelogram defined on $W$ by $0 \le x \le 3, 0 \le y \le 2$.}
+
+\problem{Compute the volumes of the parallelepipeds determined by the following vectors.}
+\subproblem{$\langle 4, 1, -1 \rangle, \langle -1, 5, 2 \rangle, \langle 1, 1, 6 \rangle$}
+\subproblem{$\langle -2, 1, 2 \rangle, \langle 3, 1, 2 \rangle, \langle 0, 2, 5 \rangle$}
+
+\problem{Compute the dot product of the vectors $\va{a}$ and $\va{b}$. Find the angle between them.}
+\subproblem{$\va{a} = \langle 1, 2 \rangle, \va{b} = \langle -2, 3 \rangle$}
+\subproblem{$\va{a} = \langle -1, 1 \rangle, \va{b} = \langle 1, 1 \rangle$}
+\subproblem{$\va{a} = \langle 1,1 \rangle, \va{b} = \langle 2, 2 \rangle$}
+\subproblem{$\va{a} = \langle 1, 2, 1 \rangle, \va{b} = \langle -1, 1, 1 \rangle$}
+\subproblem{$\va{a} = \langle -1, 2, 3 \rangle, \va{b} = \langle 3, 0, 1 \rangle$}
+
+\problem{Determine the angle between vectors $\va{a}$ and $\va{b}$ if}
+\subproblem{$\va{a} = \langle 1, 2 \rangle, \va{b} = \langle 3, 4 \rangle$}
+\subproblem{$\va{a} = \langle 2, 1, 4 \rangle, \va{b} = \langle 4, -2, 1 \rangle$}
+\subproblem{$\va{a} = \langle 1, -2, 1 \rangle, \va{b} = \langle 3, 1, 0 \rangle$}
+
+\problem{Determine all values of $y$ for which the given vectors are perpendicular.}
+\subproblem{$\langle 2, 4 \rangle, \langle 2, y \rangle$}
+\subproblem{$\langle 4, -1 \rangle, \langle y, y^2 \rangle$}
+\subproblem{$\langle 3, 1, 1 \rangle, \langle 2, 5y, y^2 \rangle$}
+
+\problem{Let $\va{u} = -2\vu{\i} + y\vu{\j}$ and $\va{v} = \alpha \vu{\i} - 2\vu{\j}$. Find $\alpha$ so that}
+\subproblem{$\va{u} \perp \va{v}$}
+\subproblem{$\va{u} || \va{v}$}
+\subproblem{The angle between $\va{u}$ and $\va{v}$ is $60$ deg.}
+
+\problem{Define $\va{a} = \langle 1, 2, 3 \rangle$ and $\va{b} = \langle 4, 10, 6 \rangle$.}
+\subproblem{Find the component of $\va{b}$ in the direction of $\va{a}$.}
+\subproblem{Find the projection of $\va{b}$ on $\va{a}$.}
+\subproblem{Find the projection of $\va{b}$ perpendicular to $\va{a}$.}
+
+\problem{Compute $\langle 1, 2, 3 \rangle \cross \langle 4, 5, 6 \rangle$.}
+
+\problem{Calculate the following cross products.}
+\subproblem{$\langle 1, -5, 2 \rangle \cross \langle -2, 1, 5 \rangle$}
+\subproblem{$\langle 2, -3, -5 \rangle \cross \langle 4, -2, 7 \rangle$}
+\subproblem{$\langle -1, 0, 1 \rangle \cross \langle 0, 4, 5 \rangle$}
+
+\problem{Let $\va{p} = \langle -1, 4, 2 \rangle, \va{q} = \langle 3, 1, -1 \rangle, \va{r} \langle 2, -3, -1 \rangle$. Check, by direct comparison, that}
+\subproblem{$\va{p} \cross \va{p} = 0$}
+\subproblem{$\va{p} \cross \va{q} = -\va{q} \cross \va{p}$}
+\subproblem{$\va{p} \cross (3\va{r}) = 3(\va{p} \cross \va{r})$}
+\subproblem{$\va{p} \cross (\va{q} + \va{r}) = \va{p} \cross \va{q} + \va{p} \cross \va{r}$}
+\subproblem{$\va{p} \cross (\va{q} + \va{r}) = \va{p} \cross \va{q} + \va{p} \cross \va{r}$}
+\subproblem{$\va{p} \cross (\va{q} \cross \va{r}) \ne (\va{p} \cross \va{q}) \cross \va{r}$}
+
+\problem{Calculate the area of the traignel with vertices $(0,0,0), (1,2,3)$, and $(3,2,1)$.}
+
+\problem{A particle $P$ of unit mass whose position in space at time $t$ is $\va{r}(t)$ has angular momentum $L(t) = \va{r}(t) \cross \va{r}'(t)$. If $\va{r}''(t) = \rho(t)\va{r}(t)$ for a scalar function $\rho$, show that $L$ is constant, i.e. does not change with time. Here, $'$ denotes $\dv{t}$.}
 
 \end{document}
