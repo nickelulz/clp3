@@ -1,5 +1,5 @@
 \documentclass{report}
-\usepackage{physics, amsmath, amssymb, esvect}
+\usepackage{physics, amsmath, amssymb, esvect, environ}
 \usepackage{parskip, hyperref, siunitx, multicol}
 
 \usepackage{graphicx, float}
@@ -60,11 +60,44 @@
 }
 
 \newenvironment{answer}
-  {\begin{minipage}{\linewidth}}
-  {\end{minipage}}
+{\begin{minipage}{\linewidth}}
+{\end{minipage}}
+
 \newcommand{\breakanswer}{
 \end{answer}
 \begin{answer}}
+
+\newcommand{\crosstable}[6]{
+\begin{bmatrix}
+\vu{\i} & \vu{\j} & \vu{k} \\
+#1 & #2 & #3 \\
+#4 & #5 & #6
+\end{bmatrix}
+}
+
+\newcommand{\mat}[4]{
+\begin{bmatrix}
+#1 & #2 \\
+#3 & #4
+\end{bmatrix}
+}
+
+\newcommand{\crosses}[6]{
+ \vu{\i}\det\mat{#2}{#3}{#5}{#6} 
+-\vu{\j}\det\mat{#1}{#3}{#4}{#6} 
++\vu{ k}\det\mat{#1}{#2}{#4}{#5}
+}
+
+\newcommand{\expandcrosses}[6]{
+  \vu{\i}\left[ \left( #2 \times #6 \right) - \left( #3 \times #5 \right) \right] 
+- \vu{\j}\left[ \left( #1 \times #6 \right) - \left( #3 \times #4 \right) \right]
++ \vu{ k}\left[ \left( #1 \times #5 \right) - \left( #2 \times #4 \right) \right]
+}
+
+\newcommand{\ihat}{\vu{\i}}
+\newcommand{\jhat}{\vu{\j}}
+\newcommand{\khat}{\vu{k}}
+\newcommand{\negspace}{\vspace{-1em}}
 
 \title{CLP 3 Multivariable Calculus Problem Solutions}
 \author{Mufaro Machaya}
@@ -792,40 +825,303 @@ Altogether, this becomes
 
 \subsection{Stage 2}
 \problem{Find the equation of a sphere if one of its diameters has end points $(2,1,4)$ and $(4,3,10)$.}
+\begin{answer}
+Let $A = (2,1,4)$ and $B=(4,3,10)$. The centrepoint, $C$, of the circle will lie in the middle of $A$ and $B$, and the radius, $R$, is $\frac{1}{2}|B-A|$.
+
+\begin{align*}
+B-A &= \langle 4-2, 3-1, 10-4 \rangle = \langle 2, 2, 6 \rangle \\
+d = |B-A| &= \sqrt{2^2 + 2^2 + 6^2} = 2\sqrt{11} \\
+r &= \frac{1}{2} d = \frac{1}{2} |B-A| = \sqrt{11} \\
+C &= A + \frac{1}{2}(B - A) = (2 + \frac{1}{2} 2, 1 + \frac{1}{2} 2, 4 + \frac{1}{2} 6) \\
+ &= (3, 2, 7)
+\end{align*}
+
+Therefore, the equation for the sphere would be
+\begin{equation*}
+(x - 3)^2 + (y - 2)^2 + (z - 7)^2 = 11
+\end{equation*}
+\end{answer}
 
 \problem{Use vectors to prove that the line joining the midpoints of two sides of a triangle is parallel to the third size and half its length.}
+\begin{answer}
+First, let's define the triangle. Let $a=(0,0), b=(b_x, 0), c=(c_x, c_y)$ be the vertices of and $\va{\alpha}=\vv{ab}=b-a, \va{\beta}=\vv{ac}=c-a,$ and $\va{\delta}=\vv{bc}=c-b$ be the edges (all in $\mathbb{R}^2$). Therefore, the side lengths we are working with are
+\begin{align*}
+\va{\alpha} = \langle b_x, 0 \rangle, & & \va{\beta} = \langle c_x, c_y \rangle, & & \va{\delta} = \langle c_x - b_x, c_y \rangle.
+\end{align*}
+Given these definitions, we can calculate the two midpoints to evaluate, which we can select for on $\bar{ab}$ and $\bar{bc}$ as $m_1$ and $m_2$ respectfully, and define the bisecting line as $\va{v} = \vv{m_1 m_2} = m_2 - m_1$.
+
+Firstly, solving for $m_1$ is quite simple
+$$m_1 = a + \frac{1}{2} \va{\alpha} = (\frac{1}{2} b_x, 0),$$
+and solving for $m_2$ naturally follows the same process
+\begin{align*}
+m_2 &= b + \frac{1}{2} \va{\delta} \\
+&= (b_x + \frac{1}{2} (c_x - b_x), 0 + \frac{1}{2} c_y) \\
+&= (\frac{1}{2} b_x + \frac{1}{2} c_x, \frac{1}{2} c_y) \\
+&= \frac{1}{2} (b_x + c_x, c_y) 
+\end{align*}
+
+Now, let's calculate $\va{v}$.
+\begin{align*}
+\va{v} &= m_2 - m_1 = \frac{1}{2} (b_x + c_x, c_y) - \frac{1}{2} (b_x, 0) \\
+&= \frac{1}{2} \langle b_x + c_x - b_x, c_y \rangle \\
+&= \frac{1}{2} \langle c_x, c_y \rangle = \frac{1}{2} \va{\beta}.
+\end{align*}
+
+Therefore, we have proven that $\va{v}$ is exactly half of $\va{\beta}$, and because it is also a scalar multiple of $\va{\beta}$, it is inherently parallel to $\va{\beta}$.
+\end{answer}
 
 \problem{Compute the areas of the parallelograms determined by the following vectors.}
+\begin{answer}
+The area of a parallelogram produced by two-dimensional vectors is eequal to the magnitude of their cross-product\footnote{The vector cross product is inherently defined in three-dimensions, so really this is the magnitude of their three dimensional vector (as the true vector result would exist solely on the $z$-axis.}, which is equal to the determinant of a $2 \times 2$ matrix comprised of both vectors.
+\end{answer}
 \subproblem{$\langle -3, 1 \rangle, \langle 4, 3 \rangle$}
+\begin{answer}
+\begin{align*}
+|\langle -3, 1 \rangle \cross \langle 4, 3 \rangle|
+&= \left| \det \begin{bmatrix} -3 & 1 \\ 4 & 3 \end{bmatrix} \right| \\
+&= |(-3 \times 3) - (1 \times 4)| \\ 
+&= |-9-4| = 13
+\end{align*}
+\end{answer}
 \subproblem{$\langle 4, 2 \rangle, \langle 6, 8 \rangle$}
+\begin{answer}
+\begin{align*}
+|\langle 4, 2 \rangle \cross \langle 6, 8 \rangle|
+&= \left| \det \begin{bmatrix} 4 & 2 \\ 6 & 8 \end{bmatrix} \right| \\
+&= |(4 \times 8) - (6 \times 2)| \\
+&= |32 - 12| = 20
+\end{align*}
+\end{answer}
 
 \problem{Consider the plane $W$ defined by $$W: -x + 3y + 3z = 6,$$ find the area of the parallelogram defined on $W$ by $0 \le x \le 3, 0 \le y \le 2$.}
+\begin{answer}
+To find the area of this parallelogram, we need to find each of the corner vertices, calculate the vector edges between them, and then calculate the magnitude of the cross-product between two of the adjacent edges.
+
+This shape produces the following four vertices (based on the bounds):
+\begin{equation*}
+\begin{matrix}
+(0,0) & (0,2) & (3,0) & (3,2)
+\end{matrix}
+\end{equation*}
+We can use the equation defining the plane to solve for the $z$ value at each point (not shown), giving the following vertices:
+\begin{equation*}
+\begin{matrix}
+A=(0,0,2) & B=(0,2,0) \\
+C=(3,0,3) & D=(3,2,1),
+\end{matrix}
+\end{equation*}
+and using these, we can define the following edge vectors:
+\begin{align*}
+\va{a} = \overline{BA} = A - B &= \langle 0, -2, 2 \rangle \\
+\va{b} = \overline{DC} = C - D &= \langle 0, -2, 2 \rangle \\
+\va{c} = \overline{AC} = C - A &= \langle 3,  0, 1 \rangle \\
+\va{d} = \overline{BD} = D - B &= \langle 3,  0, 1 \rangle
+\end{align*}
+Let $\va{\alpha}$ be an area vector of $W$. The area of the parallelogram is equal to $|\va{\alpha}|$, and we can solve for $\va{\alpha}$ using the cross product of any two adjacent edges:
+\begin{align*}
+\va{\alpha} 
+&= \va{a} \cross \va{d} \\
+&= \det\crosstable{0}{-2}{2}{3}{0}{1} \\
+&= \vu{\i}\det\mat{-2}{2}{0}{1} - \vu{\j}\det\mat{0}{2}{3}{1} + \vu{k}\det\mat{0}{-2}{3}{0} \\
+&= \vu{\i} (-2 \times 1 - 2 \times 0) - \vu{\j} (0 \times 1 - 2 \times 3) + \vu{k} (0 \times 0 + 2 \times 3) \\
+&= \vu{\i} (-2) -\vu{\j} (-6) + \vu{k}(6) \\
+&= \langle -2, 6, 6 \rangle
+\end{align*}
+Now, for the magnitude:
+\begin{align*}
+|\va{\alpha}| = \sqrt{(-2)^2 + 2(6)^2} = \sqrt{76} = 2\sqrt{19}
+\end{align*}
+Therefore, the area of the parallelogram is $2\sqrt{19}$.
+\end{answer}
 
 \problem{Compute the volumes of the parallelepipeds determined by the following vectors.}
+\begin{answer}
+The area of a parallelepiped between three vectors $\va{a}, \va{b},$ and $\va{c}$ is
+$$|\va{a} \vdot (\va{b} \cross \va{c})|.$$ 
+\end{answer}
+
 \subproblem{$\langle 4, 1, -1 \rangle, \langle -1, 5, 2 \rangle, \langle 1, 1, 6 \rangle$}
+\begin{answer}
+Let $\va{a} = \langle 4, 1, -1 \rangle, \va{b} = \langle -1, 5, 2 \rangle,$ and $\va{c} = \langle 1, 1, 6 \rangle$.
+
+\begin{align*}
+\va{b} \cross \va{c} &= \det \crosstable{-1}{5}{2}{1}{1}{6} = \vu{\i} \det\mat{5}{2}{1}{6} - \vu{\j}\det\mat{-1}{2}{1}{6} + \vu{k} \det \mat{-1}{5}{1}{1} \\
+&= \vu{\i} (5 \times 6 - 2 \times 1) - \vu{\j} (-1 \times 6 - 2 \times 1) + \vu{k} (-1 \times 1 - 5 \times 1) \\
+&= \vu{\i} (30 - 2) - \vu{\j} (-6 -2) + \vu{k}(-1-5) \\
+&= 28 \vu{\i} + 8\vu{\j} - 6\vu{k} \\
+&= \langle 28, 8, -6 \rangle \\
+\va{a} \vdot (\va{b} \cross \va{c}) &= (4 \times 28) + (1 \times 8) + (-1 \times -6) \\
+&= 112 + 8 + 6 = 126
+\end{align*}
+Therefore, the volume is 126 cubic units.
+\end{answer}
+
 \subproblem{$\langle -2, 1, 2 \rangle, \langle 3, 1, 2 \rangle, \langle 0, 2, 5 \rangle$}
+\begin{answer}
+Let $\va{a} = \langle -2, 1, 2 \rangle, \va{b} = \langle 3, 1, 2 \rangle,$ and $\va{c} = \langle 0, 2, 5 \rangle$.
+\begin{align*}
+\va{b} \cross \va{c} 
+&= \det\crosstable{3}{1}{2}{0}{2}{5} 
+= \crosses{3}{1}{2}{0}{2}{5} \\
+&= \expandcrosses{3}{1}{2}{0}{2}{5} \\
+&= \ihat(5 - 4) - \jhat(15) + \khat(6) \\
+&= \langle 1, -15, 6 \rangle \\
+\va{a} \vdot (\va{b} \cross \va{c})
+&= (-2 \times 1) + (1 \times -15) + (2 \times 6) \\
+&= -2 -15 + 12 = -5,
+\end{align*}
+Therefore, the volume is $|-5|=5$ cubic units.
+\end{answer}
 
 \problem{Compute the dot product of the vectors $\va{a}$ and $\va{b}$. Find the angle between them.}
+\begin{answer}
+The angle $\theta$ between vectors can be calculated using the equation
+$$\cos\theta = \frac{\va{u} \vdot \va{v}}{|\va{v}||\va{u}|},$$
+which subsequently becomes
+$$\theta = \arccos \frac{\va{u} \vdot \va{v}}{|\va{v}||\va{u}|} $$
+\end{answer}
+
 \subproblem{$\va{a} = \langle 1, 2 \rangle, \va{b} = \langle -2, 3 \rangle$}
+\begin{answer}
+\begin{align*}
+\va{a} \vdot \va{b} &= (1 \times -2) + (2 \times 3) = -2 + 6 = 4 \\
+|\va{a}| &= \sqrt{1^2 + 2^2} = \sqrt{5} \\
+|\va{b}| &= \sqrt{(-2)^2 + 3^2} = \sqrt{13}
+\end{align*}
+Now, for the angle:
+\begin{align*}
+\theta &= \arccos \frac{\va{a} \vdot \va{b}}{|\va{a}| |\va{b}|} = \arccos \frac{4}{\sqrt{5 \times 13}} = \SI{60}{deg}
+\end{align*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle -1, 1 \rangle, \va{b} = \langle 1, 1 \rangle$}
+\begin{answer}
+\begin{align*}
+\va{a} \vdot \va{b} &= (-1 \times 1) + (1 \times 1) = 0 \\
+\therefore \theta &= \SI{0}{deg}.
+\end{align*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle 1,1 \rangle, \va{b} = \langle 2, 2 \rangle$}
+\begin{answer}
+\negspace
+\begin{align*}
+\va{a} \vdot \va{b} &= (1 \times 2) + (1 \times 2) = 2 + 2 = 4 \\
+|\va{a}| &= \sqrt{1^2 + 1^2} = \sqrt{2} \\
+|\va{b}| &= \sqrt{2^2 + 2^2} = \sqrt{8}.
+\end{align*}
+Now for the angle:
+\begin{align*}
+\theta = \arccos \frac{4}{4} = \arccos 1 = \SI{0}{deg}.
+\end{align*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle 1, 2, 1 \rangle, \va{b} = \langle -1, 1, 1 \rangle$}
+\begin{answer}
+\begin{align*}
+\va{a} \vdot \va{b} 
+&= (1 \times -1) + (2 \times 1) + (1 \times 1)
+= -1 + 2 + 1 = 2 \\
+|\va{a}| &= \sqrt{1^2 + 2^2 + 1^2} = \sqrt{6} \\
+|\va{b}| &= \sqrt{(-1)^2 + 1^2 + 1^2} = \sqrt{3}.
+\end{align*}
+Now, for the angle:
+\begin{align*}
+\theta = \arccos \frac{2}{\sqrt{18}} = \arccos \frac{1}{\sqrt{3}} \approx \SI{0.955}{rad}/\SI{54.73}{deg}
+\end{align*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle -1, 2, 3 \rangle, \va{b} = \langle 3, 0, 1 \rangle$}
+\begin{answer}
+\begin{align*}
+\va{a} \vdot \va{b}
+&= (-1 \times 3) + (2 \times 0) + (3 \times 1)
+= -3 + 3 = 0 \\
+\therefore \theta &= \SI{0}{deg}.
+\end{align*}
+\end{answer}
 
 \problem{Determine the angle between vectors $\va{a}$ and $\va{b}$ if}
 \subproblem{$\va{a} = \langle 1, 2 \rangle, \va{b} = \langle 3, 4 \rangle$}
+\begin{answer}
+\negspace
+\begin{equation*}
+\theta = \arccos \frac{1 \times 3 + 2 \times 4}{\sqrt{1^2 + 2^2} \sqrt{3^2 + 4^2}} = \arccos \frac{3 + 8}{\sqrt{5} \sqrt{25}} = \arccos \frac{11}{5 \sqrt{5}} \approx \SI{10.3}{deg}
+\end{equation*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle 2, 1, 4 \rangle, \va{b} = \langle 4, -2, 1 \rangle$}
+\begin{answer}
+\begin{equation*}
+\theta = \arccos \frac{2 \times 4 + 1 \times -2 + 4 \times 1}{\sqrt{2^2 + 1^2 + 4^2} \sqrt{4^2 + (-2)^2 + 1^2}} = \arccos \frac{10}{21} \approx \SI{61.563}{deg}
+\end{equation*}
+\end{answer}
+
 \subproblem{$\va{a} = \langle 1, -2, 1 \rangle, \va{b} = \langle 3, 1, 0 \rangle$}
+\begin{answer}
+\begin{equation*}
+\theta = \arccos \frac{1 \times 3 - 2 \times 1 + 1 \times 0}{\sqrt{1^2 + (-2)^2 + 1^2} \sqrt{3^2 + 1^2}} = \arccos \frac{1}{2\sqrt{15}} \approx \SI{82.58}{deg}
+\end{equation*}
+\end{answer}
 
 \problem{Determine all values of $y$ for which the given vectors are perpendicular.}
-\subproblem{$\langle 2, 4 \rangle, \langle 2, y \rangle$}
-\subproblem{$\langle 4, -1 \rangle, \langle y, y^2 \rangle$}
-\subproblem{$\langle 3, 1, 1 \rangle, \langle 2, 5y, y^2 \rangle$}
+\begin{answer}
+For the two vectors to be perpendicular, their dot product must be 0.
+\end{answer}
 
-\problem{Let $\va{u} = -2\vu{\i} + y\vu{\j}$ and $\va{v} = \alpha \vu{\i} - 2\vu{\j}$. Find $\alpha$ so that}
+\subproblem{$\langle 2, 4 \rangle, \langle 2, y \rangle$}
+\begin{answer}
+$$4 + 4y = 0 \therefore y = -1$$
+\end{answer}
+
+\subproblem{$\langle 4, -1 \rangle, \langle y, y^2 \rangle$}
+\begin{answer}
+$$4y -4y^2 = 0 \therefore y = 0, 1$$
+\end{answer}
+
+\subproblem{$\langle 3, 1, 1 \rangle, \langle 2, 5y, y^2 \rangle$}
+\begin{answer}
+$$6 + 5y + y^2 = 0 \rightarrow (y + 3)(y+2) = 0, \therefore y = -2, -3$$
+\end{answer}
+
+\problem{Let $\va{u} = -2\ihat + 5\jhat$ and $\va{v} = \alpha \ihat - 2\jhat$. Find $\alpha$ so that}
 \subproblem{$\va{u} \perp \va{v}$}
+\begin{answer}
+If $\va{u} \perp \va{v}$ then $\va{u} \vdot \va{v} = 0$:
+\negspace
+\begin{align*}
+-2\alpha -10 &= 0 \\
+-2(\alpha + 5) &= 0,
+\end{align*}
+$\therefore \alpha = -5$.
+\end{answer}
+
 \subproblem{$\va{u} || \va{v}$}
+\begin{answer}
+To be parallel, $\vu{u} = t\vu{v}$:
+\negspace
+\begin{align*}
+\langle -2, 5 \rangle &= t \langle \alpha, -2 \rangle
+\end{align*}
+which is the system of equations
+\begin{align*}
+5 &= -2t \\
+-2 &= \alpha t,
+\end{align*}
+which is solved by $t = -5/2$, therefore $\alpha = 4/5$.
+\end{answer}
+
 \subproblem{The angle between $\va{u}$ and $\va{v}$ is $60$ deg.}
+\begin{answer}
+\begin{align*}
+  \frac{\va{u} \vdot \va{v}}{|\va{u}||\va{v}|} &= \cos \frac{\pi}{3} \\
+  \va{u} \vdot \va{v} &= \cos(\frac{\pi}{3}) |\va{u}||\va{v}| \\
+  -2(\alpha + 5) &= \cos(\frac{\pi}{3}) \sqrt{29} \sqrt{\alpha^2 + 4} \\
+  \frac{\alpha + 5}{\sqrt{a^2 + 4}} &= -\frac{\sqrt{29}}{2} \cos(\frac{\pi}{3}) \\
+  \dots
+  \alpha = 
+\end{align*}
+\end{answer}
 
 \problem{Define $\va{a} = \langle 1, 2, 3 \rangle$ and $\va{b} = \langle 4, 10, 6 \rangle$.}
 \subproblem{Find the component of $\va{b}$ in the direction of $\va{a}$.}
